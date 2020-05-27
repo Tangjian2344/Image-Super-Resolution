@@ -1,6 +1,5 @@
 # Image Super-Resolution
 
-
 ## CVPR2020
 
 - **[DRN]** Closed-loop Matters: Dual Regression Networks for Single Image Super-Resolution|[[pdf]](https://arxiv.org/pdf/2004.00448.pdf) [[official code]](https://github.com/guoyongcs/DRN)
