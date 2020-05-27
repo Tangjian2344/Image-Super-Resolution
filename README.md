@@ -1,157 +1,20 @@
-# Image Super-Resolution Using Very Deep Residual Channel Attention Networks
-This repository is for RCAN introduced in the following paper
+**About PyTorch 1.2.0**
+  * Now the master branch supports PyTorch 1.2.0 by default.
+  * Due to the serious version problem (especially torch.utils.data.dataloader), MDSR functions are temporarily disabled. If you have to train/evaluate the MDSR model, please use legacy branches.
 
-[Yulun Zhang](http://yulunzhang.com/), [Kunpeng Li](https://kunpengli1994.github.io/), [Kai Li](http://kailigo.github.io/), [Lichen Wang](https://sites.google.com/site/lichenwang123/), [Bineng Zhong](https://scholar.google.de/citations?user=hvRBydsAAAAJ&hl=en), and [Yun Fu](http://www1.ece.neu.edu/~yunfu/), "Image Super-Resolution Using Very Deep Residual Channel Attention Networks", ECCV 2018, [[arXiv]](https://arxiv.org/abs/1807.02758) 
+# EDSR-PyTorch
 
+**About PyTorch 1.1.0**
+  * There have been minor changes with the 1.1.0 update. Now we support PyTorch 1.1.0 by default, and please use the legacy branch if you prefer older version.
 
-The code is built on [EDSR (PyTorch)](https://github.com/thstkdgus35/EDSR-PyTorch) and tested on Ubuntu 14.04/16.04 environment (Python3.6, PyTorch_0.4.0, CUDA8.0, cuDNN5.1) with Titan X/1080Ti/Xp GPUs. RCAN model has also been merged into [EDSR (PyTorch)](https://github.com/thstkdgus35/EDSR-PyTorch).
+![](/figs/main.png)
 
-## Contents
-1. [Introduction](#introduction)
-2. [Train](#train)
-3. [Test](#test)
-4. [Results](#results)
-5. [Citation](#citation)
-6. [Acknowledgements](#acknowledgements)
+This repository is an official PyTorch implementation of the paper **"Enhanced Deep Residual Networks for Single Image Super-Resolution"** from **CVPRW 2017, 2nd NTIRE**.
+You can find the original code and more information from [here](https://github.com/LimBee/NTIRE2017).
 
-## Introduction
-Convolutional neural network (CNN) depth is of crucial importance for image super-resolution (SR). However, we observe that deeper networks for image SR are more difficult to train. The low-resolution inputs and features contain abundant low-frequency information, which is treated equally across channels, hence hindering the representational ability of CNNs. To solve these problems, we propose the very deep residual channel attention networks (RCAN). Specifically, we propose a residual in residual (RIR) structure to form very deep network, which consists of several residual groups with long skip connections. Each residual group contains some residual blocks with short skip connections. Meanwhile, RIR allows abundant low-frequency information to be bypassed through multiple skip connections, making the main network focus on learning high-frequency information. Furthermore, we propose a channel attention mechanism to adaptively rescale channel-wise features by considering interdependencies among channels. Extensive experiments show that our RCAN achieves better accuracy and visual improvements against state-of-the-art methods.
+If you find our work useful in your research or publication, please cite our work:
 
-![CA](/Figs/CA.PNG)
-Channel attention (CA) architecture.
-![RCAB](/Figs/RCAB.PNG)
-Residual channel attention block (RCAB) architecture.
-![RCAN](/Figs/RCAN.PNG)
-The architecture of our proposed residual channel attention network (RCAN).
-
-## Train
-### Prepare training data 
-
-1. Download DIV2K training data (800 training + 100 validtion images) from [DIV2K dataset](https://data.vision.ee.ethz.ch/cvl/DIV2K/) or [SNU_CVLab](https://cv.snu.ac.kr/research/EDSR/DIV2K.tar).
-
-2. Specify '--dir_data' based on the HR and LR images path. In option.py, '--ext' is set as 'sep_reset', which first convert .png to .npy. If all the training images (.png) are converted to .npy files, then set '--ext sep' to skip converting files.
-
-For more informaiton, please refer to [EDSR(PyTorch)](https://github.com/thstkdgus35/EDSR-PyTorch).
-
-### Begin to train
-
-1. (optional) Download models for our paper and place them in '/RCAN_TrainCode/experiment/model'.
-
-    All the models (BIX2/3/4/8, BDX3) can be downloaded from [Dropbox](https://www.dropbox.com/s/qm9vc0p0w9i4s0n/models_ECCV2018RCAN.zip?dl=0), [BaiduYun](https://pan.baidu.com/s/1bkoJKmdOcvLhOFXHVkFlKA), or [GoogleDrive](https://drive.google.com/file/d/10bEK-NxVtOS9-XSeyOZyaRmxUTX3iIRa/view?usp=sharing).
-
-2. Cd to 'RCAN_TrainCode/code', run the following scripts to train models.
-
-    **You can use scripts in file 'TrainRCAN_scripts' to train models for our paper.**
-
-    ```bash
-    # BI, scale 2, 3, 4, 8
-    # RCAN_BIX2_G10R20P48, input=48x48, output=96x96
-    python main.py --model RCAN --save RCAN_BIX2_G10R20P48 --scale 2 --n_resgroups 10 --n_resblocks 20 --n_feats 64  --reset --chop --save_results --print_model --patch_size 96
-
-    # RCAN_BIX3_G10R20P48, input=48x48, output=144x144
-    python main.py --model RCAN --save RCAN_BIX3_G10R20P48 --scale 3 --n_resgroups 10 --n_resblocks 20 --n_feats 64  --reset --chop --save_results --print_model --patch_size 144 --pre_train ../experiment/model/RCAN_BIX2.pt
-
-    # RCAN_BIX4_G10R20P48, input=48x48, output=192x192
-    python main.py --model RCAN --save RCAN_BIX4_G10R20P48 --scale 4 --n_resgroups 10 --n_resblocks 20 --n_feats 64  --reset --chop --save_results --print_model --patch_size 192 --pre_train ../experiment/model/RCAN_BIX2.pt
-
-    # RCAN_BIX8_G10R20P48, input=48x48, output=384x384
-    python main.py --model RCAN --save RCAN_BIX8_G10R20P48 --scale 8 --n_resgroups 10 --n_resblocks 20 --n_feats 64  --reset --chop --save_results --print_model --patch_size 384 --pre_train ../experiment/model/RCAN_BIX2.pt
-    
-    # RCAN_BDX3_G10R20P48, input=48x48, output=144x144
-    # specify '--dir_data' to the path of BD training data
-    python main.py --model RCAN --save RCAN_BIX3_G10R20P48 --scale 3 --n_resgroups 10 --n_resblocks 20 --n_feats 64  --reset --chop --save_results --print_model --patch_size 144 --pre_train ../experiment/model/RCAN_BIX2.pt
-
-    ```
-
-## Test
-### Quick start
-1. Download models for our paper and place them in '/RCAN_TestCode/model'.
-
-    All the models (BIX2/3/4/8, BDX3) can be downloaded from [Dropbox](https://www.dropbox.com/s/qm9vc0p0w9i4s0n/models_ECCV2018RCAN.zip?dl=0), [BaiduYun](https://pan.baidu.com/s/1bkoJKmdOcvLhOFXHVkFlKA), or [GoogleDrive](https://drive.google.com/file/d/10bEK-NxVtOS9-XSeyOZyaRmxUTX3iIRa/view?usp=sharing).
-
-2. Cd to '/RCAN_TestCode/code', run the following scripts.
-
-    **You can use scripts in file 'TestRCAN_scripts' to produce results for our paper.**
-
-    ```bash
-    # No self-ensemble: RCAN
-    # BI degradation model, X2, X3, X4, X8
-    # RCAN_BIX2
-    python main.py --data_test MyImage --scale 2 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX2.pt --test_only --save_results --chop --save 'RCAN' --testpath ../LR/LRBI --testset Set5
-    # RCAN_BIX3
-    python main.py --data_test MyImage --scale 3 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX3.pt --test_only --save_results --chop --save 'RCAN' --testpath ../LR/LRBI --testset Set5
-    # RCAN_BIX4
-    python main.py --data_test MyImage --scale 4 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX4.pt --test_only --save_results --chop --save 'RCAN' --testpath ../LR/LRBI --testset Set5
-    # RCAN_BIX8
-    python main.py --data_test MyImage --scale 8 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX8.pt --test_only --save_results --chop --save 'RCAN' --testpath ../LR/LRBI --testset Set5
-    # BD degradation model, X3
-    # RCAN_BDX3
-    python main.py --data_test MyImage --scale 3 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BDX3.pt --test_only --save_results --chop --save 'RCAN' --testpath ../LR/LRBD --degradation BD --testset Set5
-    # With self-ensemble: RCAN+
-    # RCANplus_BIX2
-    python main.py --data_test MyImage --scale 2 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX2.pt --test_only --save_results --chop --self_ensemble --save 'RCANplus' --testpath ../LR/LRBI --testset Set5
-    # RCANplus_BIX3
-    python main.py --data_test MyImage --scale 3 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX3.pt --test_only --save_results --chop --self_ensemble --save 'RCANplus' --testpath ../LR/LRBI --testset Set5
-    # RCANplus_BIX4
-    python main.py --data_test MyImage --scale 4 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX4.pt --test_only --save_results --chop --self_ensemble --save 'RCANplus' --testpath ../LR/LRBI --testset Set5
-    # RCANplus_BIX8
-    python main.py --data_test MyImage --scale 8 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BIX8.pt --test_only --save_results --chop --self_ensemble --save 'RCANplus' --testpath ../LR/LRBI --testset Set5
-    # BD degradation model, X3
-    # RCANplus_BDX3
-    python main.py --data_test MyImage --scale 3 --model RCAN --n_resgroups 10 --n_resblocks 20 --n_feats 64 --pre_train ../model/RCAN_BDX3.pt --test_only --save_results --chop --self_ensemble  --save 'RCANplus' --testpath ../LR/LRBD --degradation BD --testset Set5
-    ```
-
-### The whole test pipeline
-1. Prepare test data.
-
-    Place the original test sets (e.g., Set5, other test sets are available from [GoogleDrive](https://drive.google.com/drive/folders/1xyiuTr6ga6ni-yfTP7kyPHRmfBakWovo?usp=sharing) or [Baidu](https://pan.baidu.com/s/1yBI_-rknXT2lm1UAAB_bag)) in 'OriginalTestData'.
-
-    Run 'Prepare_TestData_HR_LR.m' in Matlab to generate HR/LR images with different degradation models.
-2. Conduct image SR. 
-
-    See **Quick start**
-3. Evaluate the results.
-
-    Run 'Evaluate_PSNR_SSIM.m' to obtain PSNR/SSIM values for paper.
-
-
-
-## Results
-### Quantitative Results
-![PSNR_SSIM_BI](/Figs/psnr_bi_1.PNG)
-![PSNR_SSIM_BI](/Figs/psnr_bi_2.PNG)
-![PSNR_SSIM_BI](/Figs/psnr_bi_3.PNG)
-Quantitative results with BI degradation model. Best and second best results are highlighted and underlined
-
-For more results, please refer to our [main papar](https://arxiv.org/abs/1807.02758) and [supplementary file](http://yulunzhang.com/papers/ECCV-2018-RCAN_supp.pdf).
-### Visual Results
-![Visual_PSNR_SSIM_BI](/Figs/fig1_visual_bi_x4.PNG)
-Visual results with Bicubic (BI) degradation (4×) on “img 074” from Urban100
-
-
-![Visual_PSNR_SSIM_BI](/Figs/fig5_visual_psnr_ssim_bi_x4.PNG)
-![Visual_PSNR_SSIM_BI](/Figs/supp_fig1_visual_psnr_ssim_bi_x4_1.PNG)
-![Visual_PSNR_SSIM_BI](/Figs/supp_fig1_visual_psnr_ssim_bi_x4_2.PNG)
-![Visual_PSNR_SSIM_BI](/Figs/supp_fig1_visual_psnr_ssim_bi_x4_3.PNG)
-Visual comparison for 4× SR with BI model
-
-![Visual_PSNR_SSIM_BI](/Figs/fig6_visual_psnr_ssim_bi_x8.PNG)
-Visual comparison for 8× SR with BI model
-
-![Visual_PSNR_SSIM_BD](/Figs/fig7_visual_psnr_ssim_bd_x3.PNG)
-Visual comparison for 3× SR with BD model
-
-![Visual_Compare_GAN_PSNR_SSIM_BD](/Figs/supp_fig1_visual_compare_gan_psnr_ssim_bi_x4_1.PNG)
-![Visual_Compare_GAN_PSNR_SSIM_BD](/Figs/supp_fig1_visual_compare_gan_psnr_ssim_bi_x4_2.PNG)
-![Visual_Compare_GAN_PSNR_SSIM_BD](/Figs/supp_fig1_visual_compare_gan_psnr_ssim_bi_x4_3.PNG)
-Visual comparison for 4× SR with BI model on Set14 and B100 datasets.
-The best results are highlighted. SRResNet, SRResNet VGG22, SRGAN MSE, SR-
-GAN VGG22, and SRGAN VGG54 are proposed in [CVPR2017SRGAN], ENet E and ENet PAT are
-proposed in [ICCV2017EnhanceNet]. These comparisons mainly show the eﬀectiveness of our proposed
-RCAN against GAN based methods
-
-## Citation
-If you find the code helpful in your resarch or work, please cite the following papers.
+[1] Bee Lim, Sanghyun Son, Heewon Kim, Seungjun Nah, and Kyoung Mu Lee, **"Enhanced Deep Residual Networks for Single Image Super-Resolution,"** <i>2nd NTIRE: New Trends in Image Restoration and Enhancement workshop and challenge on image super-resolution in conjunction with **CVPR 2017**. </i> [[PDF](http://openaccess.thecvf.com/content_cvpr_2017_workshops/w12/papers/Lim_Enhanced_Deep_Residual_CVPR_2017_paper.pdf)] [[arXiv](https://arxiv.org/abs/1707.02921)] [[Slide](https://cv.snu.ac.kr/research/EDSR/Presentation_v3(release).pptx)]
 ```
 @InProceedings{Lim_2017_CVPR_Workshops,
   author = {Lim, Bee and Son, Sanghyun and Kim, Heewon and Nah, Seungjun and Lee, Kyoung Mu},
@@ -160,14 +23,164 @@ If you find the code helpful in your resarch or work, please cite the following 
   month = {July},
   year = {2017}
 }
-
-@inproceedings{zhang2018rcan,
-    title={Image Super-Resolution Using Very Deep Residual Channel Attention Networks},
-    author={Zhang, Yulun and Li, Kunpeng and Li, Kai and Wang, Lichen and Zhong, Bineng and Fu, Yun},
-    booktitle={ECCV},
-    year={2018}
-}
 ```
-## Acknowledgements
-This code is built on [EDSR (PyTorch)](https://github.com/thstkdgus35/EDSR-PyTorch). We thank the authors for sharing their codes of EDSR [Torch version](https://github.com/LimBee/NTIRE2017) and [PyTorch version](https://github.com/thstkdgus35/EDSR-PyTorch).
+We provide scripts for reproducing all the results from our paper. You can train your model from scratch, or use a pre-trained model to enlarge your images.
 
+**Differences between Torch version**
+* Codes are much more compact. (Removed all unnecessary parts.)
+* Models are smaller. (About half.)
+* Slightly better performances.
+* Training and evaluation requires less memory.
+* Python-based.
+
+## Dependencies
+* Python 3.6
+* PyTorch >= 1.0.0
+* numpy
+* skimage
+* **imageio**
+* matplotlib
+* tqdm
+* cv2 >= 3.xx (Only if you want to use video input/output)
+
+## Code
+Clone this repository into any place you want.
+```bash
+git clone https://github.com/thstkdgus35/EDSR-PyTorch
+cd EDSR-PyTorch
+```
+
+## Quickstart (Demo)
+You can test our super-resolution algorithm with your images. Place your images in ``test`` folder. (like ``test/<your_image>``) We support **png** and **jpeg** files.
+
+Run the script in ``src`` folder. Before you run the demo, please uncomment the appropriate line in ```demo.sh``` that you want to execute.
+```bash
+cd src       # You are now in */EDSR-PyTorch/src
+sh demo.sh
+```
+
+You can find the result images from ```experiment/test/results``` folder.
+
+| Model | Scale | File name (.pt) | Parameters | ****PSNR** |
+|  ---  |  ---  | ---       | ---        | ---  |
+| **EDSR** | 2 | EDSR_baseline_x2 | 1.37 M | 34.61 dB |
+| | | *EDSR_x2 | 40.7 M | 35.03 dB |
+| | 3 | EDSR_baseline_x3 | 1.55 M | 30.92 dB |
+| | | *EDSR_x3 | 43.7 M | 31.26 dB |
+| | 4 | EDSR_baseline_x4 | 1.52 M | 28.95 dB |
+| | | *EDSR_x4 | 43.1 M | 29.25 dB |
+| **MDSR** | 2 | MDSR_baseline | 3.23 M | 34.63 dB |
+| | | *MDSR | 7.95 M| 34.92 dB |
+| | 3 | MDSR_baseline | | 30.94 dB |
+| | | *MDSR | | 31.22 dB |
+| | 4 | MDSR_baseline | | 28.97 dB |
+| | | *MDSR | | 29.24 dB |
+
+*Baseline models are in ``experiment/model``. Please download our final models from [here](https://cv.snu.ac.kr/research/EDSR/model_pytorch.tar) (542MB)
+**We measured PSNR using DIV2K 0801 ~ 0900, RGB channels, without self-ensemble. (scale + 2) pixels from the image boundary are ignored.
+
+You can evaluate your models with widely-used benchmark datasets:
+
+[Set5 - Bevilacqua et al. BMVC 2012](http://people.rennes.inria.fr/Aline.Roumy/results/SR_BMVC12.html),
+
+[Set14 - Zeyde et al. LNCS 2010](https://sites.google.com/site/romanzeyde/research-interests),
+
+[B100 - Martin et al. ICCV 2001](https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/),
+
+[Urban100 - Huang et al. CVPR 2015](https://sites.google.com/site/jbhuang0604/publications/struct_sr).
+
+For these datasets, we first convert the result images to YCbCr color space and evaluate PSNR on the Y channel only. You can download [benchmark datasets](https://cv.snu.ac.kr/research/EDSR/benchmark.tar) (250MB). Set ``--dir_data <where_benchmark_folder_located>`` to evaluate the EDSR and MDSR with the benchmarks.
+
+You can download some results from [here](https://cv.snu.ac.kr/research/EDSR/result_image/edsr-results.tar).
+The link contains **EDSR+_baseline_x4** and **EDSR+_x4**.
+Otherwise, you can easily generate result images with ``demo.sh`` scripts.
+
+## How to train EDSR and MDSR
+We used [DIV2K](http://www.vision.ee.ethz.ch/%7Etimofter/publications/Agustsson-CVPRW-2017.pdf) dataset to train our model. Please download it from [here](https://cv.snu.ac.kr/research/EDSR/DIV2K.tar) (7.1GB).
+
+Unpack the tar file to any place you want. Then, change the ```dir_data``` argument in ```src/option.py``` to the place where DIV2K images are located.
+
+We recommend you to pre-process the images before training. This step will decode all **png** files and save them as binaries. Use ``--ext sep_reset`` argument on your first run. You can skip the decoding part and use saved binaries with ``--ext sep`` argument.
+
+If you have enough RAM (>= 32GB), you can use ``--ext bin`` argument to pack all DIV2K images in one binary file.
+
+You can train EDSR and MDSR by yourself. All scripts are provided in the ``src/demo.sh``. Note that EDSR (x3, x4) requires pre-trained EDSR (x2). You can ignore this constraint by removing ```--pre_train <x2 model>``` argument.
+
+```bash
+cd src       # You are now in */EDSR-PyTorch/src
+sh demo.sh
+```
+
+**Update log**
+* Jan 04, 2018
+  * Many parts are re-written. You cannot use previous scripts and models directly.
+  * Pre-trained MDSR is temporarily disabled.
+  * Training details are included.
+
+* Jan 09, 2018
+  * Missing files are included (```src/data/MyImage.py```).
+  * Some links are fixed.
+
+* Jan 16, 2018
+  * Memory efficient forward function is implemented.
+  * Add --chop_forward argument to your script to enable it.
+  * Basically, this function first split a large image to small patches. Those images are merged after super-resolution. I checked this function with 12GB memory, 4000 x 2000 input image in scale 4. (Therefore, the output will be 16000 x 8000.)
+
+* Feb 21, 2018
+  * Fixed the problem when loading pre-trained multi-GPU model.
+  * Added pre-trained scale 2 baseline model.
+  * This code now only saves the best-performing model by default. For MDSR, 'the best' can be ambiguous. Use --save_models argument to keep all the intermediate models.
+  * PyTorch 0.3.1 changed their implementation of DataLoader function. Therefore, I also changed my implementation of MSDataLoader. You can find it on feature/dataloader branch.
+
+* Feb 23, 2018
+  * Now PyTorch 0.3.1 is a default. Use legacy/0.3.0 branch if you use the old version.
+  * With a new ``src/data/DIV2K.py`` code, one can easily create new data class for super-resolution.
+  * New binary data pack. (Please remove the ``DIV2K_decoded`` folder from your dataset if you have.)
+  * With ``--ext bin``, this code will automatically generate and saves the binary data pack that corresponds to previous ``DIV2K_decoded``. (This requires huge RAM (~45GB, Swap can be used.), so please be careful.)
+  * If you cannot make the binary pack, use the default setting (``--ext img``).
+
+  * Fixed a bug that PSNR in the log and PSNR calculated from the saved images does not match.
+  * Now saved images have better quality! (PSNR is ~0.1dB higher than the original code.)
+  * Added performance comparison between Torch7 model and PyTorch models.
+
+* Mar 5, 2018
+  * All baseline models are uploaded.
+  * Now supports half-precision at test time. Use ``--precision half``  to enable it. This does not degrade the output images.
+
+* Mar 11, 2018
+  * Fixed some typos in the code and script.
+  * Now --ext img is default setting. Although we recommend you to use --ext bin when training, please use --ext img when you use --test_only.
+  * Skip_batch operation is implemented. Use --skip_threshold argument to skip the batch that you want to ignore. Although this function is not exactly the same with that of Torch7 version, it will work as you expected.
+
+* Mar 20, 2018
+  * Use ``--ext sep-reset`` to pre-decode large png files. Those decoded files will be saved to the same directory with DIV2K png files. After the first run, you can use ``--ext sep`` to save time.
+  * Now supports various benchmark datasets. For example, try ``--data_test Set5`` to test your model on the Set5 images.
+  * Changed the behavior of skip_batch.
+
+* Mar 29, 2018
+  * We now provide all models from our paper.
+  * We also provide ``MDSR_baseline_jpeg`` model that suppresses JPEG artifacts in the original low-resolution image. Please use it if you have any trouble.
+  * ``MyImage`` dataset is changed to ``Demo`` dataset. Also, it works more efficient than before.
+  * Some codes and script are re-written.
+
+* Apr 9, 2018
+  * VGG and Adversarial loss is implemented based on [SRGAN](http://openaccess.thecvf.com/content_cvpr_2017/papers/Ledig_Photo-Realistic_Single_Image_CVPR_2017_paper.pdf). [WGAN](https://arxiv.org/abs/1701.07875) and [gradient penalty](https://arxiv.org/abs/1704.00028) are also implemented, but they are not tested yet.
+  * Many codes are refactored. If there exists a bug, please report it.
+  * [D-DBPN](https://arxiv.org/abs/1803.02735) is implemented. The default setting is D-DBPN-L.
+
+* Apr 26, 2018
+  * Compatible with PyTorch 0.4.0
+  * Please use the legacy/0.3.1 branch if you are using the old version of PyTorch.
+  * Minor bug fixes
+
+* July 22, 2018
+  * Thanks for recent commits that contains RDN and RCAN. Please see ``code/demo.sh`` to train/test those models.
+  * Now the dataloader is much stable than the previous version. Please erase ``DIV2K/bin`` folder that is created before this commit. Also, please avoid using ``--ext bin`` argument. Our code will automatically pre-decode png images before training. If you do not have enough spaces(~10GB) in your disk, we recommend ``--ext img``(But SLOW!).
+
+* Oct 18, 2018
+  * with ``--pre_train download``, pretrained models will be automatically downloaded from the server.
+  * Supports video input/output (inference only). Try with ``--data_test video --dir_demo [video file directory]``.
+
+* About PyTorch 1.0.0
+  * We support PyTorch 1.0.0. If you prefer the previous versions of PyTorch, use legacy branches.
+  * ``--ext bin`` is not supported. Also, please erase your bin files with ``--ext sep-reset``. Once you successfully build those bin files, you can remove ``-reset`` from the argument.
