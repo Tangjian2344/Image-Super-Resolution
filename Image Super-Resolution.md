@@ -2,7 +2,7 @@
 
 ## 2020
 
-### CVPR'20
+#### CVPR'20
 
 - **[DRN]** Closed-loop Matters: Dual Regression Networks for Single Image Super-Resolution|[[pdf]](https://arxiv.org/pdf/2004.00448.pdf) [[official code]](https://github.com/guoyongcs/DRN)
 - **[LFSSR-ATO]** Light Field Spatial Super-resolution via Deep Combinatorial Geometry Embedding and Structural Consistency Regularization|[[pdf]](https://arxiv.org/pdf/2004.02215.pdf) [[official code]](https://github.com/jingjin25/LFSSR-ATO)
