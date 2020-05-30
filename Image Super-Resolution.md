@@ -135,7 +135,7 @@
 
 ### Linear_Networks
 
-   #### 	  Early_upsampling_designs
+#### 	  Early_upsampling_designs
 
 - **[SRCNN]** Image Super-Resolution Using Deep Convolutional Networks|[[pdf]](https://arxiv.org/pdf/1501.00092.pdf) [[code]](http://mmlab.ie.cuhk.edu.hk/projects/SRCNN.html)
 
@@ -166,7 +166,7 @@
   </details>
   
   #### Late_upsampling_designs
-  
+
 - **[FSRCNN]** Accelerating the Super-Resolution Convolutional Neural Network|[[pdf]](https://arxiv.org/pdf/1608.00367.pdf) [[code]](http://mmlab.ie.cuhk.edu.hk/projects/FSRCNN.html)
 
 - <details>
@@ -181,11 +181,11 @@
       We propose a novel CNNarchitecture where the feature maps are extracted in the LR space.
   </details>
 
-### Residual_Networks
+### Residual_Networks  
 
 #### 	  Sigle-stage_networks
 
-- - **[EDSR]** Enhanced Deep Residual Networks for Single Image Super-Resolution|[[pdf]](https://arxiv.org/pdf/1707.02921.pdf) [[code]](https://github.com/LimBee/NTIRE2017)
+- **[EDSR]** Enhanced Deep Residual Networks for Single Image Super-Resolution|[[pdf]](https://arxiv.org/pdf/1707.02921.pdf) [[code]](https://github.com/LimBee/NTIRE2017)
 
   <details>
       <summary> Summary</summary>
@@ -200,7 +200,7 @@
   </details>
   
   #### Multi-stage_networks
-  
+
 - **[FormResNet]** FormResNet: Formatted Residual Learning for Image Restoration|[[pdf]](https://jianbojiao.com/pdfs/cvprw.pdf) 
 
   <details>
