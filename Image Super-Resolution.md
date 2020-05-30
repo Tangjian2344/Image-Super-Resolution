@@ -378,7 +378,7 @@
       In this paper, we propose a novel GAN-based SISR method that overcomes the limitation of existing GAN-based and produces more realistic results by attaching an additional discriminator that works in the feature domain.
   </details>
 
-- **[ESRGAN] **ESRGAN: Enhanced Super-Resolution Generative Adversarial Networks|[[pdf]](https://arxiv.org/pdf/1809.00219.pdf) [[code]](https://github.com/xinntao/ESRGAN)
+- **[ESRGAN]** ESRGAN: Enhanced Super-Resolution Generative Adversarial Networks|[[pdf]](https://arxiv.org/pdf/1809.00219.pdf) [[code]](https://github.com/xinntao/ESRGAN)
 
   <details>
       <summary> Summary</summary>
