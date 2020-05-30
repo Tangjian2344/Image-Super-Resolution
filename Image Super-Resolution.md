@@ -142,7 +142,7 @@
 
 ### Linear_Networks
 
-#### 	Early_upsampling_designs
+    #### 	Early_upsampling_designs
 
 - **[SRCNN]** Image Super-Resolution Using Deep Convolutional Networks|[[pdf]](https://arxiv.org/pdf/1501.00092.pdf) [[code]](http://mmlab.ie.cuhk.edu.hk/projects/SRCNN.html)
 
@@ -172,7 +172,7 @@
       This paper aims to train a set of fast and effective CNN (convolutional neural network) denoisers and integrate them into model-based optimization method to solve other inverse problems.
   </details>
 
-#### 	Late_upsampling_designs
+    #### 	Late_upsampling_designs
 
 - **[FSRCNN]** Accelerating the Super-Resolution Convolutional Neural Network|[[pdf]](https://arxiv.org/pdf/1608.00367.pdf) [[code]](http://mmlab.ie.cuhk.edu.hk/projects/FSRCNN.html)
 
@@ -190,7 +190,7 @@
 
 ### Residual_Networks
 
-#### 	Sigle-stage_networks
+    #### 	Sigle-stage_networks
 
 - **[EDSR]** Enhanced Deep Residual Networks for Single Image Super-Resolution|[[pdf]](https://arxiv.org/pdf/1707.02921.pdf) [[code]](https://github.com/LimBee/NTIRE2017)
 
@@ -206,7 +206,7 @@
       We design an architecture that implements a cascading mechanism upon a residual network and present variant models of the proposed cascading residual network to further improve efficiency.
   </details>
 
-#### 	Multi-stage_networks
+    #### 	Multi-stage_networks
 
 - **[FormResNet]** FormResNet: Formatted Residual Learning for Image Restoration|[[pdf]](https://jianbojiao.com/pdfs/cvprw.pdf) 
 
