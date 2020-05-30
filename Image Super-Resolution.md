@@ -30,7 +30,7 @@
 
 - [Multiple_Degradation_Handing_Networks](#Multiple_Degradation_Handing_Networks)
 
-- [GAN_Models](#GAN_Models)
+- [GAN_Models](#GAN_Models)  
 
 
 
@@ -135,7 +135,7 @@
 - Lossless single image super resolution from low_quality jpg images|[[pdf]](https://openreview.net/pdf?id=r1l0VCNKwB)
 - Super-Resolution via Conditional Implicit Maximum Likelihood Estimation|[[pdf]](https://openreview.net/pdf?id=HklyMhCqYQ)
 - **[HighRes-net]** HighRes-net: Multi-Frame Super-Resolution by Recursive Fusion|[[pdf]](https://openreview.net/pdf?id=HJxJ2h4tPr)
-- Pixel Co-Occurence Based Loss Metrics for Super Resolution Texture Recovery|[[pdf]](https://openreview.net/pdf?id=rylrI1HtPr)
+- Pixel Co-Occurence Based Loss Metrics for Super Resolution Texture Recovery|[[pdf]](https://openreview.net/pdf?id=rylrI1HtPr)  
 
 
 
