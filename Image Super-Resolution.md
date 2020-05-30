@@ -30,8 +30,7 @@
 
 - [Multiple_Degradation_Handing_Networks](#Multiple_Degradation_Handing_Networks)
 
-- [GAN_Models](#GAN_Models)  
-
+- [GAN_Models](#GAN_Models)
 
 
 ## Classified_by_time
